@@ -1,0 +1,74 @@
+# The Prediction Task 
+Goal : **predict future events** (AIDs) for each **session** in the test data **after the last timestamp**
+
+- **AID (Article ID)** represents an **item or product ID** in the dataset.
+- It refers to the **specific product a user interacts with** (clicks, adds to cart, or orders).
+
+
+- The test dataset consists of **sessions that have been truncated at a certain timestamp**.
+- This means you only see the **beginning/middle** of each session, but the remaining part (future interactions) is **missing**.
+- Your goal is to **predict what happens next** in that session.
+
+
+For each **session**, you need to predict **the next AID(s) that the user will interact with**, depending on the event type:
+
+#### **🔹 Clicks Prediction**
+- You must **predict the next AID** that will be clicked.
+- However, you are allowed to **predict up to 20 candidates**, ranked by probability.
+- **Ground Truth:** The actual next clicked AID.
+
+#### **🔹 Carts Prediction**
+- You must **predict all AIDs that will be added to the cart** after the truncation point.
+- The ground truth can contain **multiple** AIDs.
+
+#### **🔹 Orders Prediction**
+- You must **predict all AIDs that will be ordered** after the truncation point.
+- Again, the ground truth can contain **multiple** AIDs.
+
+---
+
+### **4️ Example**
+#### **🔹 Given Session (Before Truncation)**
+| Timestamp | Event Type | AID  |
+|-----------|------------|------|
+| 100       | click      | 123  |
+| 105       | click      | 456  |
+| 110       | add_to_cart | 789  |
+
+- The session is **truncated at timestamp 110**.
+- You do **not** see what happens next.
+- Your job is to **predict what happens after timestamp 110**.
+
+#### **🔹 Ground Truth (Hidden Future Events)**
+| Timestamp | Event Type | AID  |
+|-----------|------------|------|
+| 115       | click      | 555  |
+| 120       | add_to_cart | 999  |
+| 125       | order      | 999  |
+
+- **Clicks Prediction:** You should **predict AID 555** as the next click.
+- **Carts Prediction:** You should **predict AID 999** as being added to cart.
+- **Orders Prediction:** You should **predict AID 999** as being ordered.
+
+---
+
+### **5️⃣ How to Make Predictions?**
+- **Historical Trends:** Look at what AIDs were clicked before truncation and predict likely next clicks.
+- **Session-Based Recommendations:** Use the session’s past interactions to infer what AIDs may be added to cart or ordered.
+- **Popularity-Based Methods:** If no session history is available, predict the most popular AIDs in the dataset.
+
+---
+
+### **🚀 Summary**
+| Event Type | What to Predict? | How Many? | Ground Truth |
+|------------|-----------------|------------|--------------|
+| **Clicks** | Next clicked AID | Up to 20 | Only **1** correct answer |
+| **Carts** | AIDs added to cart | Up to 20 | Multiple possible correct answers |
+| **Orders** | AIDs ordered | Up to 20 | Multiple possible correct answers |
+
+Your goal is to **predict what AIDs occur after the truncation timestamp for each session**.
+
+---
+
+### **🔹 Next Steps**
+Would you like help building a **baseline model** using **session-based recommendations or popularity-based methods**? 🚀
